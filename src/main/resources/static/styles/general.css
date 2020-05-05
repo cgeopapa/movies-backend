@@ -1,0 +1,13 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+body {
+  background: #913d88;
+  font: 13px monospace;
+  color: #ffffff;
+}
+p {
+  margin-top: 30px;
+}

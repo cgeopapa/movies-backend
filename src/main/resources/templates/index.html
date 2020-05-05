@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="styles/general.css" />
+    <link rel="stylesheet" type="text/css" href="styles/searchbar.css" />
+    <link rel="stylesheet" type="text/css" href="styles/result.css" />
+    <link rel="stylesheet" type="text/css" href="styles/login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="scripts/script.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <title>Movies</title>
+</head>
+
+<body onload="init()">
+
+    <div id="search-container" class="cntr">
+        <button onclick="document.getElementById('login').style.display='block'">
+            <i class="fas fa-sign-in-alt"></i> Log-In
+        </button>
+        <div class="cntr-innr">
+            <label class="search" for="inpt_search">
+                <input id="inpt_search" type="text" onchange="search(this.value)" />
+            </label>
+            <p>Hover to search.</p>
+        </div>
+    </div>
+    <div id="result-container" class="card">
+        <div class="card-flex">
+            <img id="poster" alt="poster" src="">
+            <div class="info-flex">
+                <div class="info-flex-body">
+                    <!-- <i onclick="myBookmark()" title="Add to Bookmarks" id="bookmark" class="far fa-heart"></i> -->
+                    <span class="bookmark" title="Add to Bookmarks"><i onclick="myBookmark()" class="fas fa-heart"></i></span>
+                    <h1 id="title">Test Title</h1>
+                    <h2>Plot</h2>
+                    <p id="plot">plot</p>
+                    <button id="moreButton" onclick="searchMore()">More...</button>
+
+                    <h2>Actors</h2>
+                    <p id="actors">actors</p>
+
+                    <h2>Director & Writer</h2>
+                    <p id="director">director</p>
+                    <p id="writer">writer</p>
+
+                </div>
+                <div class="info-flex-footer">
+                    <h3 style="margin-left: 0;">Genre: </h3>
+                    <p id="genre">PG-13</p>
+
+                    <h3>Rated: </h3>
+                    <p id="rated">PG-13</p>
+
+                    <h3>imdb Rating: </h3>
+                    <p id="imdbRating">8.8</p>
+
+                    <h3>Released: </h3>
+                    <p id="released">8.8</p>
+
+                    <h3>Runtime: </h3>
+                    <p id="runtime">8.8</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login" class="modal">
+        <form class="modal-content animate" action="/action_page.php" method="post">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
+            </div>
+
+            <div class="container">
+                <label for="uname"><b>Email</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+
+                <button class="modal-button" type="submit">Login</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+            </div>
+
+            <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn modal-button">Cancel</button>
+                <span class="psw"><a href="register">Register now!</a></span>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
+    <script src="scripts/searchbar.js"></script>
+    <script src="scripts/bookmark.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+.card {
+    width: 80%;
+    margin: 0 auto;
+    background-color: rgb(241, 234, 239);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 15px;
+    padding: 0;
+    color: #303030;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card p {
+    margin: 0;
+}
+
+.card h2 {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.card h1 {
+    margin-bottom: 0;
+}
+
+.card-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+#poster {
+    border-radius: 15px;
+    margin-right: 20px;
+    display: block;
+    height: auto;
+    width: 50%;
+}
+
+.info-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-flex-body {
+    position: relative;
+}
+
+.info-flex-footer {
+    display: flex;
+    align-items: baseline;
+}
+
+.info-flex-footer h3 {
+    margin-left: 10px;
+}
+
+.bookmark {
+    cursor: pointer;
+    position: absolute;
+    right: 25px;
+    top: 10px;
+    font-size: 25px;
+}
+
+.fas {
+    cursor: pointer;
+}
+
+.fas:hover {
+    color: red;
+}
+
+
+/* .far {
+    cursor: pointer;
+}
+
+.far:hover {
+    color: red;
+} */

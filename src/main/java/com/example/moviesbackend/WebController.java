@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class WebController
@@ -44,7 +43,7 @@ public class WebController
     }
 
     @PostMapping("/login")
-    @ResponseBody
+//    @ResponseBody
     public ResponseEntity postLogin(User user)
     {
         String email = user.getEmail();
@@ -59,15 +58,8 @@ public class WebController
         }
         else
         {
-//            model.addAttribute("logError","logError");
             responseEntity = new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }
-
-//    @RequestMapping(value="/login")
-//    public String getLogin()
-//    {
-//        return "index";
-//    }
 }

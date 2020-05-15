@@ -12,29 +12,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class WebController
-{
+public class WebController {
     @Autowired
     private UserDAO userDAO;
 
     @GetMapping
-    public String index()
-    {
+    public String index() {
         return "index";
     }
 
-    @RequestMapping(value="/register")
-    public String getRegister()
-    {
+    @RequestMapping(value = "/register")
+    public String getRegister() {
         return "register";
     }
 
     @PostMapping("/register")
-    public String postRegister(User user, Model model)
-    {
+    public String postRegister(User user, Model model) {
         String email = user.getEmail();
-        if(email != null && userDAO.findByEmail(email) == null)
-        {
+        if (email != null && userDAO.findByEmail(email) == null) {
             userDAO.save(user);
             return "index";
         }
@@ -44,21 +39,35 @@ public class WebController
 
     @PostMapping("/login")
 //    @ResponseBody
-    public ResponseEntity postLogin(User user)
-    {
+    public ResponseEntity postLogin(User user) {
         String email = user.getEmail();
         String pass = user.getPassword();
         User userdb = userDAO.findByEmail(email);
         ResponseEntity responseEntity;
 
-        if(userdb != null && userdb.getPassword().equals(pass))
-        {
+        if (userdb != null && userdb.getPassword().equals(pass)) {
             System.out.println("LogIn");
             responseEntity = new ResponseEntity(HttpStatus.OK);
-        }
-        else
-        {
+        } else {
             responseEntity = new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return responseEntity;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity postRegister(User user) {
+        String email = user.getEmail();
+        String pass = user.getPassword();
+        String passRepeat = user.getRepeatPass();
+        User userdb = userDAO.findByEmail(email);
+        ResponseEntity responseEntity;
+
+        if (userdb == null && email != null && pass.equals(passRepeat)) {
+            System.out.println("Register");
+            userDAO.save(user);
+            responseEntity = new ResponseEntity(HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return responseEntity;
     }

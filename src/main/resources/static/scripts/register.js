@@ -17,3 +17,14 @@ function validate()
     }
     return true;
 }
+var modal = document.getElementById('register');
+
+$('#register').ajaxForm({
+    url: "/register",
+    success: function() {
+        document.getElementById('register-error').style.display = 'none';
+    },
+    error: function() {
+        document.getElementById('register-error').style.display = 'block';
+    }
+});

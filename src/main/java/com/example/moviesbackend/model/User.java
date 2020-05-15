@@ -17,6 +17,7 @@ public class User
 
     @NotNull
     private String password;
+    private String repeatPass;
 
     @ElementCollection
     private List<String> bookmarks;
@@ -25,11 +26,12 @@ public class User
     {
     }
 
-    public User(int id, String email, String password, List<String> bookmarks)
+    public User(int id, String email, String password, String repeatPass,List<String> bookmarks)
     {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.repeatPass=repeatPass;
         this.bookmarks = bookmarks;
     }
 
@@ -61,6 +63,14 @@ public class User
     public void setPassword(String password)
     {
         this.password = Integer.toString(password.hashCode());
+    }
+
+    public String getRepeatPass(){
+        return repeatPass;
+    }
+
+    public void setRepeatPass(String repeatPass){
+        this.repeatPass=repeatPass;
     }
 
     public List<String> getBookmarks()

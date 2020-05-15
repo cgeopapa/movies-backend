@@ -19,7 +19,8 @@
                 <label for="email"><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required>
                 <div style="color: red;" th:if="${logError != null}" class="error">Email already in use</div>
-                <div style="color: red; display: none;" id="errormsg" class="error">Email already in use</div>
+                <div id="errormsg" style="color: red; display: none;" class="error">Email already in use</div>
+                <div id="register-error" style="color: red; display: none;" class="error">Passwords don't match</div>
 
                 <label for="password"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" required>
@@ -32,4 +33,5 @@
         </form>
     </div>
 </body>
+
 </html>

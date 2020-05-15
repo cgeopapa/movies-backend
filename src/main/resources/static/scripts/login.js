@@ -1,12 +1,12 @@
 var modal = document.getElementById('login');
 
 $('#login').ajaxForm({
-    url : "/login",
-    success : function(){
+    url: "/login",
+    success: function(){
         document.getElementById('credentials-error').style.display='none';
         document.getElementById('login').style.display='none'
     },
-    error : function (){
+    error: function (){
         document.getElementById('credentials-error').style.display='block';
     }
 }); 

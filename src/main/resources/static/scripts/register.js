@@ -1,7 +1,26 @@
+var errormsg;
+
+function oninit()
+{
+    errormsg = document.getElementById('errormsg');
+}
+
+$('#register').ajaxForm({
+    url: "/register",
+    beforeSubmit: validate,    
+    success: function() {
+        errormsg.style.display = 'none';
+        window.location.replace("/");
+    },
+    error: function() {
+        errormsg.style.display = 'block';
+        errormsg.innerHTML = "Email already in use";
+    }
+});
+
 function validate()
 {
     let form = document.regForm;
-    let errormsg = document.getElementById("errormsg");
 
     if(form.password.value.length < 4)
     {
@@ -17,14 +36,3 @@ function validate()
     }
     return true;
 }
-var modal = document.getElementById('register');
-
-$('#register').ajaxForm({
-    url: "/register",
-    success: function() {
-        document.getElementById('register-error').style.display = 'none';
-    },
-    error: function() {
-        document.getElementById('register-error').style.display = 'block';
-    }
-});

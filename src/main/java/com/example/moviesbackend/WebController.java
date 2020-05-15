@@ -53,10 +53,10 @@ public class WebController {
         }
         return responseEntity;
     }
-
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity postRegister(User user, HttpServletResponse response) {
+    public ResponseEntity postRegister(User user, HttpServletResponse response)
+    {
         String email = user.getEmail();
         User userdb = userDAO.findByEmail(email);
         ResponseEntity responseEntity;
@@ -74,7 +74,6 @@ public class WebController {
         }
         return responseEntity;
     }
-
     @GetMapping(value = "/bookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getBookmark(@CookieValue(value = "id", defaultValue = "0") String sid)
     {
@@ -91,7 +90,28 @@ public class WebController {
             return ResponseEntity.ok().body(bookmarks);
         }
     }
-
+    @GetMapping(value = "/bookmark/{imdb}")
+    public ResponseEntity<Boolean> getBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
+    {
+        int id = Integer.parseInt(sid);
+        if(id == 0)
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else
+        {
+            Optional<User> user = userDAO.findById(id);
+            List<String> bookmarks = user.get().getBookmarks();
+            for (String imdbCur : bookmarks)
+            {
+                if (imdbCur.equals(imdb))
+                {
+                    return ResponseEntity.ok().body(true);
+                }
+            }
+            return ResponseEntity.ok().body(false);
+        }
+    }
     @PostMapping(value = "/bookmark/{imdb}")
     public ResponseEntity addBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {
@@ -115,5 +135,25 @@ public class WebController {
             userDAO.save(user.get());
             return new ResponseEntity(HttpStatus.OK);
         }
+    }
+    @DeleteMapping(value = "/bookmark/{imdb}")
+    public ResponseEntity removeBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
+    {
+        int id = Integer.parseInt(sid);
+        if (id != 0)
+        {
+            Optional<User> user = userDAO.findById(id);
+            List<String> bookmarks = user.get().getBookmarks();
+            for (String imdbCur : bookmarks)
+            {
+                if (imdbCur.equals(imdb))
+                {
+                    bookmarks.remove(imdbCur);
+                    userDAO.save(user.get());
+                    return new ResponseEntity(HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

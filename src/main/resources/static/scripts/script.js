@@ -1,15 +1,18 @@
-const xhttp = new XMLHttpRequest();
 const urlShort = 'http://www.omdbapi.com/?apikey=3c976051&plot=short&r=xml&t='
 const urlFull = 'http://www.omdbapi.com/?apikey=3c976051&plot=full&r=xml&i='
+var bk;
 var searchDiv, resultDiv;
 var searchId;
+var userBookmarks;
 
 function init()
-{
+{    
     searchDiv = document.getElementById("search-container")
     resultDiv = document.getElementById("result-container")
-
+    
     resultDiv.style.display = "none";
+    
+    bk = document.getElementsByClassName('bookmark')[0];
 }
 
 function search(param)
@@ -25,9 +28,17 @@ function search(param)
         resultDiv.style.display = "block";
         document.getElementById("moreButton").style.display = "block";
 
+        if(userBookmarks === undefined)
+        {
+            getBookmarks();
+        }
+        
+        xhttp = new XMLHttpRequest();
         xhttp.open("GET", urlShort + param, true);
         xhttp.send();
 
+        //TODO: JSON parse
+        //TODO: getElement madness
         xhttp.onreadystatechange = function ()
         {
             if (this.readyState == 4 && this.status == 200)
@@ -69,4 +80,40 @@ function searchMore()
             document.getElementById("moreButton").style.display = "none";
         }
     };
+}
+
+function getBookmarks()
+{
+    xhttpBookmarks = new XMLHttpRequest();
+    xhttpBookmarks.open("GET", "http://localhost:8080/bookmarks", true);
+    xhttpBookmarks.send();
+    xhttpBookmarks.onreadystatechange = function ()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            let response = JSON.parse(this.response);
+            userBookmarks = response;
+        }
+    }    
+}
+
+function setBookmark() {
+    if (bk.classList.contains("far")) {
+        bk.classList.remove("far");
+        bk.classList.add("fas");
+    } else {
+        bk.classList.remove("fas");
+        bk.classList.add("far");
+    }
+
+    xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://localhost:8080/bookmark/"+searchId, true);
+    xhttp.send();
+    xhttp.onreadystatechange = function ()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            console.log("OK");
+        }
+    }
 }

@@ -4,15 +4,15 @@ import com.example.moviesbackend.dao.UserDAO;
 import com.example.moviesbackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class WebController {
@@ -28,17 +28,6 @@ public class WebController {
     public String getRegister() {
         return "register";
     }
-
-//    @PostMapping("/register")
-//    public String postRegister(User user, Model model) {
-//        String email = user.getEmail();
-//        if (email != null && userDAO.findByEmail(email) == null) {
-//            userDAO.save(user);
-//            return "index";
-//        }
-//        model.addAttribute("logError", "logError");
-//        return "register";
-//    }
 
     @PostMapping("/login")
     @ResponseBody
@@ -84,5 +73,47 @@ public class WebController {
             responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return responseEntity;
+    }
+
+    @GetMapping(value = "/bookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getBookmark(@CookieValue(value = "id", defaultValue = "0") String sid)
+    {
+        int id = Integer.parseInt(sid);
+        if(id == 0)
+        {
+            return ResponseEntity.badRequest().body(null);
+        }
+        else
+        {
+            Optional<User> user = userDAO.findById(id);
+            List<String> bookmarks = user.get().getBookmarks();
+
+            return ResponseEntity.ok().body(bookmarks);
+        }
+    }
+
+    @PostMapping(value = "/bookmark/{imdb}")
+    public ResponseEntity addBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
+    {
+        int id = Integer.parseInt(sid);
+        if(id == 0)
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else
+        {
+            Optional<User> user = userDAO.findById(id);
+            List<String> bookmarks = user.get().getBookmarks();
+            for (String imdbCur : bookmarks)
+            {
+                if (imdbCur.equals(imdb))
+                {
+                    return new ResponseEntity(HttpStatus.OK);
+                }
+            }
+            bookmarks.add(imdb);
+            userDAO.save(user.get());
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
 }

@@ -4,6 +4,7 @@ var bk;
 var searchDiv, resultDiv;
 var searchId;
 var userBookmarks;
+var isBookmark = false;
 
 function init()
 {    
@@ -12,7 +13,7 @@ function init()
     
     resultDiv.style.display = "none";
     
-    bk = document.getElementsByClassName('bookmark')[0];
+    bk = document.getElementById('bookmarkHeart');
 }
 
 function search(param)
@@ -28,11 +29,6 @@ function search(param)
         resultDiv.style.display = "block";
         document.getElementById("moreButton").style.display = "block";
 
-        if(userBookmarks === undefined)
-        {
-            getBookmarks();
-        }
-        
         xhttp = new XMLHttpRequest();
         xhttp.open("GET", urlShort + param, true);
         xhttp.send();
@@ -59,8 +55,22 @@ function search(param)
                 document.getElementById("genre").innerHTML = xmlDoc.attributes["genre"].nodeValue;
                 document.getElementById("released").innerHTML = xmlDoc.attributes["released"].nodeValue;
                 document.getElementById("runtime").innerHTML = xmlDoc.attributes["runtime"].nodeValue;
+
+                xhttpB = new XMLHttpRequest();
+                xhttpB.open("GET", "http://localhost:8080/bookmark/" + searchId, true);
+                xhttpB.send();
+                xhttpB.onreadystatechange = function ()
+                {
+                    if (this.readyState == 4 && this.status == 200)
+                    {
+                        let response = JSON.parse(this.response);
+                        isBookmark = response;
+                        bookmarkColor();
+                    }
+                };
             }
         };
+
     }
 
 }
@@ -98,22 +108,38 @@ function getBookmarks()
 }
 
 function setBookmark() {
-    if (bk.classList.contains("far")) {
-        bk.classList.remove("far");
-        bk.classList.add("fas");
-    } else {
-        bk.classList.remove("fas");
-        bk.classList.add("far");
-    }
-
     xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://localhost:8080/bookmark/"+searchId, true);
+    if(isBookmark)
+    {
+        xhttp.open("DELETE", "http://localhost:8080/bookmark/"+searchId, true);
+    }
+    else
+    {
+        xhttp.open("POST", "http://localhost:8080/bookmark/"+searchId, true);
+    }
     xhttp.send();
     xhttp.onreadystatechange = function ()
     {
         if (this.readyState == 4 && this.status == 200)
         {
-            console.log("OK");
+            isBookmark = !isBookmark;
+            bookmarkColor();
         }
+    }
+}
+
+function bookmarkColor()
+{
+    if (isBookmark)
+    {
+        bk.classList.remove("far");
+        bk.classList.add("fas");
+        bk.title = "Remove from Bookmarks";
+    } 
+    else 
+    {
+        bk.classList.remove("fas");
+        bk.classList.add("far");
+        bk.title = "Add to Bookmarks";
     }
 }

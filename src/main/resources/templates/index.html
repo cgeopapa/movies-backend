@@ -24,12 +24,12 @@
 <body onload="init()">
 
     <div id="search-container" class="cntr">
-        <button id="log-in-out" onclick="document.getElementById('login').style.display='block'">
+        <button id="log-in" onclick="document.getElementById('login').style.display='block'">
             <i class="fas fa-sign-in-alt"></i> Log-In
         </button>
-        <!-- <button id="log-in-out" onclick="document.getElementById('login').style.display='block'">
+        <button id="log-out" onmouseover="on_logout_mouseover()" onmouseout="on_logout_mouseout()" onclick="logout()" style="display: none;">
             <i class="fas fa-sign-out-alt"></i> Log-Out
-        </button> -->
+        </button>
         <div class="cntr-innr">
             <label class="search" for="inpt_search">
                 <input id="inpt_search" type="text" onchange="search(this.value)" />

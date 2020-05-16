@@ -1,4 +1,6 @@
 var modal = document.getElementById('login');
+var username;
+var logoutButton, loginButton;
 
 $('#login').ajaxForm({
     url: "/login",
@@ -6,8 +8,14 @@ $('#login').ajaxForm({
         document.getElementById('credentials-error').style.display='none';
         document.getElementById('login').style.display='none'
         
-        let json = JSON.parse(response);
-        
+        username = response.email;
+
+        loginButton = document.getElementById("log-in")
+        loginButton.style.display = "none";
+
+        logoutButton = document.getElementById("log-out")
+        logoutButton.style.display = "block";
+        logoutButton.innerHTML = username;
     },
     error: function (){
         document.getElementById('credentials-error').style.display='block';
@@ -25,5 +33,23 @@ function register()
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", "/register", true );
     xmlHttp.send();
+}
+
+function on_logout_mouseover()
+{
+    logoutButton.innerHTML = "Log-out";
+}
+
+function on_logout_mouseout()
+{
+    logoutButton.innerHTML = username;
+}
+
+function logout()
+{
+    document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+
+    logoutButton.style.display = "none";
+    loginButton.style.display = "block";
 }
 

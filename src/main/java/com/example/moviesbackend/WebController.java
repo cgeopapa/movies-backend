@@ -51,6 +51,7 @@ public class WebController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity postRegister(User user, HttpServletResponse response)
@@ -72,6 +73,7 @@ public class WebController {
         }
         return responseEntity;
     }
+
     @GetMapping(value = "/bookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getBookmark(@CookieValue(value = "id", defaultValue = "0") String sid)
     {
@@ -88,6 +90,7 @@ public class WebController {
             return ResponseEntity.ok().body(bookmarks);
         }
     }
+
     @GetMapping(value = "/bookmark/{imdb}")
     public ResponseEntity<Boolean> getBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {
@@ -110,6 +113,7 @@ public class WebController {
             return ResponseEntity.ok().body(false);
         }
     }
+
     @PostMapping(value = "/bookmark/{imdb}")
     public ResponseEntity addBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {
@@ -134,6 +138,7 @@ public class WebController {
             return new ResponseEntity(HttpStatus.OK);
         }
     }
+
     @DeleteMapping(value = "/bookmark/{imdb}")
     public ResponseEntity removeBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {

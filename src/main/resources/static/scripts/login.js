@@ -2,9 +2,12 @@ var modal = document.getElementById('login');
 
 $('#login').ajaxForm({
     url: "/login",
-    success: function(){
+    success: function(response){
         document.getElementById('credentials-error').style.display='none';
         document.getElementById('login').style.display='none'
+        
+        let json = JSON.parse(response);
+        
     },
     error: function (){
         document.getElementById('credentials-error').style.display='block';

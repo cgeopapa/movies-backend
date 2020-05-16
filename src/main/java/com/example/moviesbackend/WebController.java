@@ -31,12 +31,11 @@ public class WebController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity postLogin(User user, HttpServletResponse response)
+    public ResponseEntity<User> postLogin(User user, HttpServletResponse response)
     {
         String email = user.getEmail();
         String pass = user.getPassword();
         User userdb = userDAO.findByEmail(email);
-        ResponseEntity responseEntity;
 
         if(userdb != null && userdb.getPassword().equals(pass))
         {
@@ -45,13 +44,12 @@ public class WebController {
             Cookie cookie = new Cookie("id", Long.toString(userdb.getId()));
             response.addCookie(cookie);
 
-            responseEntity = new ResponseEntity(HttpStatus.OK);
+            return ResponseEntity.ok().body(userdb);
         }
         else
         {
-            responseEntity = new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.badRequest().body(null);
         }
-        return responseEntity;
     }
     @PostMapping("/register")
     @ResponseBody

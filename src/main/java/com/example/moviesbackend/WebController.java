@@ -159,4 +159,19 @@ public class WebController {
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping(value = "/user")
+    public ResponseEntity<User> getUser(@CookieValue(value = "id", defaultValue = "0") String sid)
+    {
+        int id = Integer.parseInt(sid);
+        if (id == 0)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        else
+        {
+            Optional<User> user = userDAO.findById(id);
+            return ResponseEntity.ok().body(user.get());
+        }
+    }
 }

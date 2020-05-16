@@ -5,15 +5,30 @@ var searchDiv, resultDiv;
 var searchId;
 var userBookmarks;
 var isBookmark = false;
+var modal;
+var username;
+var loginButton;
+var logoutButton;
 
 function init()
 {    
     searchDiv = document.getElementById("search-container")
     resultDiv = document.getElementById("result-container")
-    
+    loginButton = document.getElementById("log-in");
+    logoutButton = document.getElementById("log-out");
+    modal = document.getElementById('login');
+
     resultDiv.style.display = "none";
     
     bk = document.getElementById('bookmarkHeart');
+
+    getUser();
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 function search(param)
@@ -56,18 +71,7 @@ function search(param)
                 document.getElementById("released").innerHTML = xmlDoc.attributes["released"].nodeValue;
                 document.getElementById("runtime").innerHTML = xmlDoc.attributes["runtime"].nodeValue;
 
-                xhttpB = new XMLHttpRequest();
-                xhttpB.open("GET", "http://localhost:8080/bookmark/" + searchId, true);
-                xhttpB.send();
-                xhttpB.onreadystatechange = function ()
-                {
-                    if (this.readyState == 4 && this.status == 200)
-                    {
-                        let response = JSON.parse(this.response);
-                        isBookmark = response;
-                        bookmarkColor();
-                    }
-                };
+                checkIfBookmarked();
             }
         };
 
@@ -107,23 +111,57 @@ function getBookmarks()
     }    
 }
 
-function setBookmark() {
-    xhttp = new XMLHttpRequest();
-    if(isBookmark)
+function checkIfBookmarked()
+{
+    if(searchId)
     {
-        xhttp.open("DELETE", "http://localhost:8080/bookmark/"+searchId, true);
+        xhttpB = new XMLHttpRequest();
+        xhttpB.open("GET", "http://localhost:8080/bookmark/" + searchId, true);
+        xhttpB.send();
+        xhttpB.onreadystatechange = function ()
+        {
+            if (this.readyState == 4)
+            {
+                if(this.status == 200)
+                {
+                    let response = JSON.parse(this.response);
+                    isBookmark = response;
+                }
+                else
+                {
+                    isBookmark = false;
+                }
+                bookmarkColor();
+            }
+        };
+    }
+}
+
+function setBookmark() 
+{
+    if(document.cookie.indexOf("id") === -1)
+    {
+        document.getElementById('login').style.display='block';
     }
     else
     {
-        xhttp.open("POST", "http://localhost:8080/bookmark/"+searchId, true);
-    }
-    xhttp.send();
-    xhttp.onreadystatechange = function ()
-    {
-        if (this.readyState == 4 && this.status == 200)
+        xhttp = new XMLHttpRequest();
+        if(isBookmark)
         {
-            isBookmark = !isBookmark;
-            bookmarkColor();
+            xhttp.open("DELETE", "http://localhost:8080/bookmark/"+searchId, true);
+        }
+        else
+        {
+            xhttp.open("POST", "http://localhost:8080/bookmark/"+searchId, true);
+        }
+        xhttp.send();
+        xhttp.onreadystatechange = function ()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                isBookmark = !isBookmark;
+                bookmarkColor();
+            }
         }
     }
 }
@@ -141,5 +179,72 @@ function bookmarkColor()
         bk.classList.remove("fas");
         bk.classList.add("far");
         bk.title = "Add to Bookmarks";
+    }
+}
+
+
+$('#login').ajaxForm({
+    url: "/login",
+    success: function(response){
+        document.getElementById('credentials-error').style.display='none';
+        document.getElementById('login').style.display='none'
+        
+        username = response.email;
+
+        login();
+    },
+    error: function (){
+        document.getElementById('credentials-error').style.display='block';
+    }
+}); 
+
+function register()
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "/register", true );
+    xmlHttp.send();
+}
+
+function on_logout_mouseover()
+{
+    logoutButton.innerHTML = "Log-out";
+}
+
+function on_logout_mouseout()
+{
+    logoutButton.innerHTML = username;
+}
+
+function logout()
+{
+    document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+
+    logoutButton.style.display = "none";
+    loginButton.style.display = "block";
+}
+
+function login()
+{
+    loginButton.style.display = "none";
+
+    logoutButton.style.display = "block";
+    logoutButton.innerHTML = username;
+
+    checkIfBookmarked();
+}
+
+function getUser()
+{
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/user", true);
+    xhttp.send();
+    xhttp.onreadystatechange = function ()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            let response = JSON.parse(this.response);
+            username = response.email;
+            login();
+        }
     }
 }

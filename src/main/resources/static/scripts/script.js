@@ -10,8 +10,7 @@ var username;
 var loginButton;
 var logoutButton;
 
-function init()
-{    
+function init() {
     searchDiv = document.getElementById("search-container")
     resultDiv = document.getElementById("result-container")
     loginButton = document.getElementById("log-in");
@@ -19,7 +18,7 @@ function init()
     modal = document.getElementById('login');
 
     resultDiv.style.display = "none";
-    
+
     bk = document.getElementById('bookmarkHeart');
 
     getUser();
@@ -31,15 +30,11 @@ window.onclick = function(event) {
     }
 }
 
-function search(param)
-{
-    if(param === "")
-    {
+function search(param) {
+    if (param === "") {
         searchDiv.classList.remove("result");
         resultDiv.style.display = "none";
-    }
-    else
-    {
+    } else {
         searchDiv.classList.add("result");
         resultDiv.style.display = "block";
         document.getElementById("moreButton").style.display = "block";
@@ -50,10 +45,8 @@ function search(param)
 
         //TODO: JSON parse
         //TODO: getElement madness
-        xhttp.onreadystatechange = function ()
-        {
-            if (this.readyState == 4 && this.status == 200)
-            {
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
                 var xmlDoc = this.responseXML.getElementsByTagName("movie")[0];
                 searchId = xmlDoc.attributes["imdbID"].nodeValue;
 
@@ -66,7 +59,7 @@ function search(param)
                 document.getElementById("writer").innerHTML = xmlDoc.attributes["writer"].nodeValue;
                 document.getElementById("rated").innerHTML = xmlDoc.attributes["rated"].nodeValue;
                 document.getElementById("imdbRating").innerHTML = xmlDoc.attributes["imdbRating"].nodeValue;
-                
+
                 document.getElementById("genre").innerHTML = xmlDoc.attributes["genre"].nodeValue;
                 document.getElementById("released").innerHTML = xmlDoc.attributes["released"].nodeValue;
                 document.getElementById("runtime").innerHTML = xmlDoc.attributes["runtime"].nodeValue;
@@ -79,15 +72,12 @@ function search(param)
 
 }
 
-function searchMore()
-{
+function searchMore() {
     xhttp.open("GET", urlFull + searchId, true);
     xhttp.send();
 
-    xhttp.onreadystatechange = function ()
-    {
-        if (this.readyState == 4 && this.status == 200)
-        {
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
             var xmlDoc = this.responseXML.getElementsByTagName("movie")[0];
 
             document.getElementById("plot").innerHTML = xmlDoc.attributes["plot"].nodeValue;
@@ -96,39 +86,36 @@ function searchMore()
     };
 }
 
-function getBookmarks()
-{
+function getBookmarks() {
     xhttpBookmarks = new XMLHttpRequest();
     xhttpBookmarks.open("GET", "http://localhost:8080/bookmarks", true);
     xhttpBookmarks.send();
-    xhttpBookmarks.onreadystatechange = function ()
-    {
-        if (this.readyState == 4 && this.status == 200)
-        {
+    xhttpBookmarks.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(this.response);
             userBookmarks = response;
+
+            if (response) {
+                var xmlDoc = this.responseXML.getElementsByTagName("movie")[0];
+
+                document.getElementById("poster").src = xmlDoc.attributes["poster"].nodeValue;
+
+            }
         }
-    }    
+    }
 }
 
-function checkIfBookmarked()
-{
-    if(searchId)
-    {
+function checkIfBookmarked() {
+    if (searchId) {
         xhttpB = new XMLHttpRequest();
         xhttpB.open("GET", "http://localhost:8080/bookmark/" + searchId, true);
         xhttpB.send();
-        xhttpB.onreadystatechange = function ()
-        {
-            if (this.readyState == 4)
-            {
-                if(this.status == 200)
-                {
+        xhttpB.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
                     let response = JSON.parse(this.response);
                     isBookmark = response;
-                }
-                else
-                {
+                } else {
                     isBookmark = false;
                 }
                 bookmarkColor();
@@ -137,28 +124,33 @@ function checkIfBookmarked()
     }
 }
 
-function setBookmark() 
-{
-    if(document.cookie.indexOf("id") === -1)
-    {
-        document.getElementById('login').style.display='block';
+function visitBookmarks() {
+
+    if (document.cookie.indexOf("id") === -1) {
+        document.getElementById('login').style.display = 'block';
+    } else {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "/bookmarks", true);
+        xmlHttp.send();
+        //getBookmarks();
+        window.location.href = "bookmarks";
     }
-    else
-    {
+
+}
+
+function setBookmark() {
+    if (document.cookie.indexOf("id") === -1) {
+        document.getElementById('login').style.display = 'block';
+    } else {
         xhttp = new XMLHttpRequest();
-        if(isBookmark)
-        {
-            xhttp.open("DELETE", "http://localhost:8080/bookmark/"+searchId, true);
-        }
-        else
-        {
-            xhttp.open("POST", "http://localhost:8080/bookmark/"+searchId, true);
+        if (isBookmark) {
+            xhttp.open("DELETE", "http://localhost:8080/bookmark/" + searchId, true);
+        } else {
+            xhttp.open("POST", "http://localhost:8080/bookmark/" + searchId, true);
         }
         xhttp.send();
-        xhttp.onreadystatechange = function ()
-        {
-            if (this.readyState == 4 && this.status == 200)
-            {
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
                 isBookmark = !isBookmark;
                 bookmarkColor();
             }
@@ -166,16 +158,12 @@ function setBookmark()
     }
 }
 
-function bookmarkColor()
-{
-    if (isBookmark)
-    {
+function bookmarkColor() {
+    if (isBookmark) {
         bk.classList.remove("far");
         bk.classList.add("fas");
         bk.title = "Remove from Bookmarks";
-    } 
-    else 
-    {
+    } else {
         bk.classList.remove("fas");
         bk.classList.add("far");
         bk.title = "Add to Bookmarks";
@@ -183,48 +171,56 @@ function bookmarkColor()
 }
 
 
+$('#my-bookmarks').ajaxForm({
+    url: "/bookmarks",
+    success: function(response) {
+        document.getElementById('poster').src.style.display = 'block';
+        document.getElementById("title").innerHTML = xmlDoc.attributes["title"].nodeValue;
+        document.getElementById("plot").innerHTML = xmlDoc.attributes["plot"].nodeValue;
+
+    },
+    error: function() {
+        console.log("error");
+    }
+})
+
 $('#login').ajaxForm({
     url: "/login",
-    success: function(response){
-        document.getElementById('credentials-error').style.display='none';
-        document.getElementById('login').style.display='none'
-        
+    success: function(response) {
+        document.getElementById('credentials-error').style.display = 'none';
+        document.getElementById('login').style.display = 'none'
+
         username = response.email;
 
         login();
     },
-    error: function (){
-        document.getElementById('credentials-error').style.display='block';
+    error: function() {
+        document.getElementById('credentials-error').style.display = 'block';
     }
-}); 
+});
 
-function register()
-{
+function register() {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "/register", true );
+    xmlHttp.open("GET", "/register", true);
     xmlHttp.send();
 }
 
-function on_logout_mouseover()
-{
+function on_logout_mouseover() {
     logoutButton.innerHTML = "Log-out";
 }
 
-function on_logout_mouseout()
-{
+function on_logout_mouseout() {
     logoutButton.innerHTML = username;
 }
 
-function logout()
-{
+function logout() {
     document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 
     logoutButton.style.display = "none";
     loginButton.style.display = "block";
 }
 
-function login()
-{
+function login() {
     loginButton.style.display = "none";
 
     logoutButton.style.display = "block";
@@ -233,15 +229,12 @@ function login()
     checkIfBookmarked();
 }
 
-function getUser()
-{
+function getUser() {
     xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/user", true);
     xhttp.send();
-    xhttp.onreadystatechange = function ()
-    {
-        if (this.readyState == 4 && this.status == 200)
-        {
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(this.response);
             username = response.email;
             login();

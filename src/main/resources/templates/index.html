@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,9 @@
     <link rel="stylesheet" type="text/css" href="styles/result.css" />
     <link rel="stylesheet" type="text/css" href="styles/login.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
-    <script src="http://malsup.github.com/jquery.form.js"></script> 
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
     <script src="scripts/script.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -23,12 +24,22 @@
 <body onload="init()">
 
     <div id="search-container" class="cntr">
+
+        <div class="bk">
+            <button id="my-bookmarks" onclick="visitBookmarks()" style="display: block;">
+                <!-- <a href="bookmarks"><i class="far fa-bookmark"></i> My Bookmarks</a> -->
+                <i class="far fa-bookmark"></i> My Bookmarks
+            </button>
+        </div>
+
         <button id="log-in" onclick="document.getElementById('login').style.display='block'">
             <i class="fas fa-sign-in-alt"></i> Log-In
         </button>
+
         <button id="log-out" onmouseover="on_logout_mouseover()" onmouseout="on_logout_mouseout()" onclick="logout()" style="display: none;">
             <i class="fas fa-sign-out-alt"></i> Log-Out
         </button>
+
         <div class="cntr-innr">
             <label class="search" for="inpt_search">
                 <input id="inpt_search" type="text" onchange="search(this.value)" />
@@ -36,6 +47,7 @@
             <p>Hover to search.</p>
         </div>
     </div>
+
     <div id="result-container" class="card">
         <div class="card-flex">
             <img id="poster" alt="poster" src="">
@@ -90,7 +102,7 @@
 
                 <div id="credentials-error" style="color: red; display: none;" class="error">Email or password are incorrect</div>
 
-                <button class="modal-button" type="submit" >Login</button>
+                <button class="modal-button" type="submit">Login</button>
             </div>
 
             <div class="container" style="background-color:#f1f1f1">
@@ -98,6 +110,10 @@
                 <span class="psw"><a href="register">Register now!</a></span>
             </div>
         </form>
+    </div>
+
+    <div id="mybookmark" class="modal">
+        <a href="bookmarks">My Bookmarks!!!!!</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>

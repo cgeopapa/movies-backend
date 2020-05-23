@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +8,21 @@
 
     <link rel="stylesheet" type="text/css" href="styles/general.css" />
     <link rel="stylesheet" type="text/css" href="styles/login.css" />
-    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
-    <script src="http://malsup.github.com/jquery.form.js"></script> 
-    
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
     <script src="scripts/register.js"></script>
-    <title>Register!</title>
+    <title>Register</title>
 </head>
+
 <body onload="oninit()">
     <div id="register" class="modal" style="display: block;">
         <form class="modal-content animate" name="regForm" action="/register" method="POST">
             <div class="container">
                 <label for="email"><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required>
-                
+
                 <div id="errormsg" style="color: red; display: none;" class="error">Email already in use</div>
 
                 <label for="password"><b>Password</b></label>

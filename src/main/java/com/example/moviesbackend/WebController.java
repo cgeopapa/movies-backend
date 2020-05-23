@@ -29,6 +29,11 @@ public class WebController {
         return "register";
     }
 
+    @RequestMapping(value = "/bookmarks")
+    public String redirectBookmarks() {
+        return "bookmarks";
+    }
+
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<User> postLogin(User user, HttpServletResponse response)
@@ -74,8 +79,8 @@ public class WebController {
         return responseEntity;
     }
 
-    @GetMapping(value = "/bookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>> getBookmark(@CookieValue(value = "id", defaultValue = "0") String sid)
+    @RequestMapping(value = "/userbookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getBookmarks(@CookieValue(value = "id", defaultValue = "0") String sid)
     {
         int id = Integer.parseInt(sid);
         if(id == 0)

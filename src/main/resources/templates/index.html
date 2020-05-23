@@ -24,14 +24,10 @@
 <body onload="init()">
 
     <div id="search-container" class="cntr">
-
-        <div class="bk">
-            <button id="my-bookmarks" onclick="visitBookmarks()" style="display: block;">
-                <!-- <a href="bookmarks"><i class="far fa-bookmark"></i> My Bookmarks</a> -->
-                <i class="far fa-bookmark"></i> My Bookmarks
-            </button>
-        </div>
-
+        <button class="bk">
+            <a href="bookmarks" onclick="return visitBookmarks()"><i class="far fa-bookmark"></i> My Bookmarks</a>
+            <!-- <i class="far fa-bookmark"></i> My Bookmarks -->
+        </button>
         <button id="log-in" onclick="document.getElementById('login').style.display='block'">
             <i class="fas fa-sign-in-alt"></i> Log-In
         </button>
@@ -118,7 +114,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
     <script src="scripts/searchbar.js"></script>
-    <script src="scripts/bookmark.js"></script>
 </body>
 
 </html>

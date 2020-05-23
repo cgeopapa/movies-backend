@@ -86,25 +86,6 @@ function searchMore() {
     };
 }
 
-function getBookmarks() {
-    xhttpBookmarks = new XMLHttpRequest();
-    xhttpBookmarks.open("GET", "http://localhost:8080/bookmarks", true);
-    xhttpBookmarks.send();
-    xhttpBookmarks.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            let response = JSON.parse(this.response);
-            userBookmarks = response;
-
-            if (response) {
-                var xmlDoc = this.responseXML.getElementsByTagName("movie")[0];
-
-                document.getElementById("poster").src = xmlDoc.attributes["poster"].nodeValue;
-
-            }
-        }
-    }
-}
-
 function checkIfBookmarked() {
     if (searchId) {
         xhttpB = new XMLHttpRequest();
@@ -122,20 +103,6 @@ function checkIfBookmarked() {
             }
         };
     }
-}
-
-function visitBookmarks() {
-
-    if (document.cookie.indexOf("id") === -1) {
-        document.getElementById('login').style.display = 'block';
-    } else {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/bookmarks", true);
-        xmlHttp.send();
-        //getBookmarks();
-        window.location.href = "bookmarks";
-    }
-
 }
 
 function setBookmark() {
@@ -170,19 +137,14 @@ function bookmarkColor() {
     }
 }
 
-
-$('#my-bookmarks').ajaxForm({
-    url: "/bookmarks",
-    success: function(response) {
-        document.getElementById('poster').src.style.display = 'block';
-        document.getElementById("title").innerHTML = xmlDoc.attributes["title"].nodeValue;
-        document.getElementById("plot").innerHTML = xmlDoc.attributes["plot"].nodeValue;
-
-    },
-    error: function() {
-        console.log("error");
+function visitBookmarks() {
+    if (document.cookie.indexOf("id") === -1) {
+        document.getElementById('login').style.display = 'block';
+        return false;
+    } else {
+        return true;
     }
-})
+}
 
 $('#login').ajaxForm({
     url: "/login",
@@ -199,11 +161,11 @@ $('#login').ajaxForm({
     }
 });
 
-function register() {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "/register", true);
-    xmlHttp.send();
-}
+// function register() {
+//     let xmlHttp = new XMLHttpRequest();
+//     xmlHttp.open("GET", "/register", true);
+//     xmlHttp.send();
+// }
 
 function on_logout_mouseover() {
     logoutButton.innerHTML = "Log-out";

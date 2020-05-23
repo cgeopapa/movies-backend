@@ -68,7 +68,7 @@
 
 .cntr button {
     cursor: pointer;
-    width: 100px;
+    /* width: 110%; */
     background-color: #D854A7;
     color: #ffffff;
     border-radius: 20px;
@@ -81,5 +81,10 @@
 .bk {
     position: absolute;
     margin: 0;
-    width: 55%;
+    left: 25px;
+}
+
+.bk a {
+    text-decoration: none;
+    color: inherit;
 }

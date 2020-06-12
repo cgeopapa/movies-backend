@@ -5,19 +5,22 @@ function oninit()
     errormsg = document.getElementById('errormsg');
 }
 
+//jQuery form for registering new user
 $('#register').ajaxForm({
     url: "/register",
-    beforeSubmit: validate,    
+    beforeSubmit: validate, // before sumbit validate
     success: function() {
         errormsg.style.display = 'none';
         window.location.replace("/");
     },
-    error: function() {
+    error: function() { // if email exists server returns error so display message
         errormsg.style.display = 'block';
         errormsg.innerHTML = "Email already in use";
     }
 });
 
+// validate passwords shoud be the same and longer than 4 characters
+// if ok return true else false
 function validate()
 {
     let form = document.regForm;

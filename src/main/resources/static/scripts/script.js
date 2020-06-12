@@ -10,6 +10,7 @@ var username;
 var loginButton;
 var logoutButton;
 
+//initialize variables
 function init() {
     searchDiv = document.getElementById("search-container")
     resultDiv = document.getElementById("result-container")
@@ -30,6 +31,7 @@ window.onclick = function(event) {
     }
 }
 
+//search for movie with sort plot
 function search(param) {
     if (param === "") {
         searchDiv.classList.remove("result");
@@ -72,6 +74,7 @@ function search(param) {
 
 }
 
+//search for movie with full plot
 function searchMore() {
     xhttp.open("GET", urlFull + searchId, true);
     xhttp.send();
@@ -86,6 +89,7 @@ function searchMore() {
     };
 }
 
+// If we are searching get if bookmarked by user
 function checkIfBookmarked() {
     if (searchId) {
         xhttpB = new XMLHttpRequest();
@@ -105,6 +109,7 @@ function checkIfBookmarked() {
     }
 }
 
+// add or delete from user bookmarks if logged in
 function setBookmark() {
     if (document.cookie.indexOf("id") === -1) {
         document.getElementById('login').style.display = 'block';
@@ -125,6 +130,7 @@ function setBookmark() {
     }
 }
 
+//Set heart button color
 function bookmarkColor() {
     if (isBookmark) {
         bk.classList.remove("far");
@@ -137,6 +143,7 @@ function bookmarkColor() {
     }
 }
 
+// Show login form if trying to go to bookmarks and not logged in
 function visitBookmarks() {
     if (document.cookie.indexOf("id") === -1) {
         document.getElementById('login').style.display = 'block';
@@ -146,26 +153,21 @@ function visitBookmarks() {
     }
 }
 
+// jQuery form to handle login
 $('#login').ajaxForm({
     url: "/login",
     success: function(response) {
         document.getElementById('credentials-error').style.display = 'none';
-        document.getElementById('login').style.display = 'none'
+        document.getElementById('login').style.display = 'none';
 
         username = response.email;
 
         login();
     },
-    error: function() {
+    error: function() { // onError display error message
         document.getElementById('credentials-error').style.display = 'block';
     }
 });
-
-// function register() {
-//     let xmlHttp = new XMLHttpRequest();
-//     xmlHttp.open("GET", "/register", true);
-//     xmlHttp.send();
-// }
 
 function on_logout_mouseover() {
     logoutButton.innerHTML = "Log-out";
@@ -182,6 +184,7 @@ function logout() {
     loginButton.style.display = "block";
 }
 
+// Set logout button with username
 function login() {
     loginButton.style.display = "none";
 
@@ -191,6 +194,7 @@ function login() {
     checkIfBookmarked();
 }
 
+// If cookie exists the getUser name and login
 function getUser() {
     xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/user", true);

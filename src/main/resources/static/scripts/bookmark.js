@@ -1,20 +1,4 @@
-// xhttp = new XMLHttpRequest();
-// xhttp.open("GET", "http://localhost:8080/bookmark/", true);
-// xhttp.send();
-// xhttp.onreadystatechange = function() {
-//     if (this.readyState == 4 && this.status == 200) {
-//         var xmlDoc = this.responseXML.getElementsByTagName("movie")[0];
-//         searchId = xmlDoc.attributes["imdbID"].nodeValue;
-
-//         console.log(xmlDoc.attributes);
-//         document.getElementById("poster").src = xmlDoc.attributes["poster"].nodeValue;
-//         document.getElementById("title").innerHTML = xmlDoc.attributes["title"].nodeValue;
-//         document.getElementById("plot").innerHTML = xmlDoc.attributes["plot"].nodeValue;
-
-//         checkIfBookmarked();
-//     }
-// };
-
+//get all user bookmarks and display them in the list
 function getBookmarks() {
     let ul = document.getElementById("movie-list");
     fetch("/userbookmarks").then(function(response){
@@ -44,33 +28,4 @@ function getBookmarks() {
         });
     })
 
-    // let xmlHttp = new XMLHttpRequest();
-    // xmlHttp.responseType = "json";
-    // xmlHttp.open("GET", "/bookmarks", true);
-    // xmlHttp.onload = function(){
-    //     let resp = xmlHttp.response;
-    //     for(movie in resp)
-    //         {
-    //             console.log(movie.poster);
-    //         }
-    // }
-    // xmlHttp.send(null);
-    // xmlHttp.onreadystatechange = function() {
-    //     if (this.readyState == 4 && this.status == 200) {
-    //         let response = JSON.parse(this.response);
-    //         userBookmarks = response;
-
-    //         for(movie in response)
-    //         {
-    //             console.log(movie.poster);
-    //         }
-
-            // if (response) {
-            //     var xmlDoc = this.responseXML.getElementsByTagName("movie")[0];
-
-            //     document.getElementById("poster").src = xmlDoc.attributes["poster"].nodeValue;
-
-            // }
-    //     }
-    // }
 }

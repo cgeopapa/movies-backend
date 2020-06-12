@@ -19,21 +19,25 @@ public class WebController {
     @Autowired
     private UserDAO userDAO;
 
+    //Default get home page
     @GetMapping
     public String index() {
         return "index";
     }
 
+    //Register html
     @RequestMapping(value = "/register")
     public String getRegister() {
         return "register";
     }
 
+    //Bookmarks html
     @RequestMapping(value = "/bookmarks")
     public String redirectBookmarks() {
         return "bookmarks";
     }
 
+    //User login
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<User> postLogin(User user, HttpServletResponse response)
@@ -42,15 +46,18 @@ public class WebController {
         String pass = user.getPassword();
         User userdb = userDAO.findByEmail(email);
 
+        //User exists and password is correct, then login
         if(userdb != null && userdb.getPassword().equals(pass))
         {
             System.out.println("LogIn of user id: " + userdb.getId());
 
+            //Write cookie with userID
             Cookie cookie = new Cookie("id", Long.toString(userdb.getId()));
             response.addCookie(cookie);
 
             return ResponseEntity.ok().body(userdb);
         }
+        //else return error
         else
         {
             return ResponseEntity.badRequest().body(null);
@@ -65,7 +72,9 @@ public class WebController {
         User userdb = userDAO.findByEmail(email);
         ResponseEntity responseEntity;
 
-        if (userdb == null) {
+        //If email-user doesn't exist create user
+        if (userdb == null)
+        {
             System.out.println("Register");
             User savedUser = userDAO.save(user);
 
@@ -73,7 +82,10 @@ public class WebController {
             response.addCookie(cookie);
 
             responseEntity = new ResponseEntity(HttpStatus.OK);
-        } else {
+        }
+        //else return error
+        else
+        {
             responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return responseEntity;
@@ -82,12 +94,14 @@ public class WebController {
     @RequestMapping(value = "/userbookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getBookmarks(@CookieValue(value = "id", defaultValue = "0") String sid)
     {
+        //Read user cookie for userID
         int id = Integer.parseInt(sid);
+        //If no cookie then no user is logged in so return error
         if(id == 0)
         {
             return ResponseEntity.badRequest().body(null);
         }
-        else
+        else //Return user bookmarks list
         {
             Optional<User> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
@@ -99,12 +113,14 @@ public class WebController {
     @GetMapping(value = "/bookmark/{imdb}")
     public ResponseEntity<Boolean> getBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {
+        //Get cookie to get userID
         int id = Integer.parseInt(sid);
+        //If no cookie there is no user so return error
         if(id == 0)
         {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        else
+        else //Get movie imdb code and search in user bookmarks list
         {
             Optional<User> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
@@ -115,6 +131,7 @@ public class WebController {
                     return ResponseEntity.ok().body(true);
                 }
             }
+            //If not found return false
             return ResponseEntity.ok().body(false);
         }
     }
@@ -122,12 +139,13 @@ public class WebController {
     @PostMapping(value = "/bookmark/{imdb}")
     public ResponseEntity addBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {
+        //Get cookie for userID
         int id = Integer.parseInt(sid);
         if(id == 0)
         {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        else
+        else //add this imdb code to this user bookmarks list if does not already exist
         {
             Optional<User> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
@@ -148,7 +166,7 @@ public class WebController {
     public ResponseEntity removeBookmark(@PathVariable(name="imdb") String imdb, @CookieValue(value = "id", defaultValue = "0") String sid)
     {
         int id = Integer.parseInt(sid);
-        if (id != 0)
+        if (id != 0) //I userId found delete imdb bookmark if exists
         {
             Optional<User> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
@@ -168,12 +186,13 @@ public class WebController {
     @GetMapping(value = "/user")
     public ResponseEntity<User> getUser(@CookieValue(value = "id", defaultValue = "0") String sid)
     {
+        //Get cookie for userID
         int id = Integer.parseInt(sid);
         if (id == 0)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        else
+        else //If found userID return the user info
         {
             Optional<User> user = userDAO.findById(id);
             return ResponseEntity.ok().body(user.get());

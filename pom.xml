@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>movies-backend</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>movies-backend</name>
 	<description>Demo project for Spring Boot</description>
 

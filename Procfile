@@ -1,1 +1,1 @@
-web: mvn spring-boot:run
+web: java -jar target/movies-backend-2.2.6.RELEASE.jar

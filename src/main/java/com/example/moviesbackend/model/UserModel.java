@@ -9,10 +9,11 @@ public class UserModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @NotNull
-    @Column(unique = true, name = "id")
+    @Column(unique = true)
     private String email;
 
     @NotNull

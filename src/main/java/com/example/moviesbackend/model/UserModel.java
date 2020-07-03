@@ -12,7 +12,7 @@ public class UserModel
     private int id;
 
     @NotNull
-    @Column(unique = true)
+    @Column(unique = true, name = "id")
     private String email;
 
     @NotNull

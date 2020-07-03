@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-public class User
+public class UserModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,11 @@ public class User
     @ElementCollection
     private List<String> bookmarks;
 
-    public User()
+    public UserModel()
     {
     }
 
-    public User(int id, String email, String password, List<String> bookmarks)
+    public UserModel(int id, String email, String password, List<String> bookmarks)
     {
         this.id = id;
         this.email = email;

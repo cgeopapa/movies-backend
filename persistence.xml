@@ -1,7 +1,7 @@
 <persistence>
     <persistence-unit name="Collection_Type">
 
-        <class>com.example.moviesbackend.model.User</class>
+        <class>com.example.moviesbackend.model.UserModel</class>
         <class>com.example.moviesbackend.model.Bookmark</class>
 
 
@@ -9,7 +9,7 @@
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/movies"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.userModel" value="root"/>
             <property name="javax.persistence.jdbc.password" value="0000"/>
             <property name="eclipselink.logging.level" value="SEVERE"/>
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>

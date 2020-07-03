@@ -1,7 +1,7 @@
 package com.example.moviesbackend;
 
 import com.example.moviesbackend.dao.UserDAO;
-import com.example.moviesbackend.model.User;
+import com.example.moviesbackend.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,11 +40,11 @@ public class WebController {
     //User login
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<User> postLogin(User user, HttpServletResponse response)
+    public ResponseEntity<UserModel> postLogin(UserModel userModel, HttpServletResponse response)
     {
-        String email = user.getEmail();
-        String pass = user.getPassword();
-        User userdb = userDAO.findByEmail(email);
+        String email = userModel.getEmail();
+        String pass = userModel.getPassword();
+        UserModel userdb = userDAO.findByEmail(email);
 
         //User exists and password is correct, then login
         if(userdb != null && userdb.getPassword().equals(pass))
@@ -66,19 +66,19 @@ public class WebController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity postRegister(User user, HttpServletResponse response)
+    public ResponseEntity postRegister(UserModel userModel, HttpServletResponse response)
     {
-        String email = user.getEmail();
-        User userdb = userDAO.findByEmail(email);
+        String email = userModel.getEmail();
+        UserModel userdb = userDAO.findByEmail(email);
         ResponseEntity responseEntity;
 
         //If email-user doesn't exist create user
         if (userdb == null)
         {
             System.out.println("Register");
-            User savedUser = userDAO.save(user);
+            UserModel savedUserModel = userDAO.save(userModel);
 
-            Cookie cookie = new Cookie("id", Long.toString(savedUser.getId()));
+            Cookie cookie = new Cookie("id", Long.toString(savedUserModel.getId()));
             response.addCookie(cookie);
 
             responseEntity = new ResponseEntity(HttpStatus.OK);
@@ -103,7 +103,7 @@ public class WebController {
         }
         else //Return user bookmarks list
         {
-            Optional<User> user = userDAO.findById(id);
+            Optional<UserModel> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
 
             return ResponseEntity.ok().body(bookmarks);
@@ -122,7 +122,7 @@ public class WebController {
         }
         else //Get movie imdb code and search in user bookmarks list
         {
-            Optional<User> user = userDAO.findById(id);
+            Optional<UserModel> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
             for (String imdbCur : bookmarks)
             {
@@ -147,7 +147,7 @@ public class WebController {
         }
         else //add this imdb code to this user bookmarks list if does not already exist
         {
-            Optional<User> user = userDAO.findById(id);
+            Optional<UserModel> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
             for (String imdbCur : bookmarks)
             {
@@ -168,7 +168,7 @@ public class WebController {
         int id = Integer.parseInt(sid);
         if (id != 0) //I userId found delete imdb bookmark if exists
         {
-            Optional<User> user = userDAO.findById(id);
+            Optional<UserModel> user = userDAO.findById(id);
             List<String> bookmarks = user.get().getBookmarks();
             for (String imdbCur : bookmarks)
             {
@@ -184,7 +184,7 @@ public class WebController {
     }
 
     @GetMapping(value = "/user")
-    public ResponseEntity<User> getUser(@CookieValue(value = "id", defaultValue = "0") String sid)
+    public ResponseEntity<UserModel> getUser(@CookieValue(value = "id", defaultValue = "0") String sid)
     {
         //Get cookie for userID
         int id = Integer.parseInt(sid);
@@ -194,7 +194,7 @@ public class WebController {
         }
         else //If found userID return the user info
         {
-            Optional<User> user = userDAO.findById(id);
+            Optional<UserModel> user = userDAO.findById(id);
             return ResponseEntity.ok().body(user.get());
         }
     }

@@ -1,5 +1,5 @@
-const urlShort = 'http://www.omdbapi.com/?apikey=3c976051&plot=short&r=xml&t='
-const urlFull = 'http://www.omdbapi.com/?apikey=3c976051&plot=full&r=xml&i='
+const urlShort = 'https://www.omdbapi.com/?apikey=3c976051&plot=short&r=xml&t='
+const urlFull = 'https://www.omdbapi.com/?apikey=3c976051&plot=full&r=xml&i='
 var bk;
 var searchDiv, resultDiv;
 var searchId;

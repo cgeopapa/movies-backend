@@ -6,7 +6,7 @@ function getBookmarks() {
     }).then(function(jsonResp){
         jsonResp.forEach(movieID => {
             xhttp = new XMLHttpRequest();
-            xhttp.open("GET", 'http://www.omdbapi.com/?apikey=3c976051&plot=small&r=json&i=' + movieID, true);
+            xhttp.open("GET", 'https://www.omdbapi.com/?apikey=3c976051&plot=small&r=json&i=' + movieID, true);
             xhttp.send();
             xhttp.onreadystatechange = function(){
                 if (this.readyState == 4 && this.status == 200) {

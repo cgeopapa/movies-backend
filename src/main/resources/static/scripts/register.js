@@ -4,7 +4,7 @@ function oninit()
 {
     errormsg = document.getElementById('errormsg');
 
-    alert("Keep in mind that the database I'm using is not satisfies all security standards.\n\nWith that in mind, it is recommended you use a weak & insecure password.");
+    alert("Keep in mind that the database I'm using does not satisfy all security standards.\n\nWith that in mind, it is recommended you use a weak & insecure password.");
 }
 
 //jQuery form for registering new user

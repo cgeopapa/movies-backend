@@ -93,7 +93,7 @@ function searchMore() {
 function checkIfBookmarked() {
     if (searchId) {
         xhttpB = new XMLHttpRequest();
-        xhttpB.open("GET", "http://localhost:8080/bookmark/" + searchId, true);
+        xhttpB.open("GET", "/bookmark/" + searchId, true);
         xhttpB.send();
         xhttpB.onreadystatechange = function() {
             if (this.readyState == 4) {
@@ -116,9 +116,9 @@ function setBookmark() {
     } else {
         xhttp = new XMLHttpRequest();
         if (isBookmark) {
-            xhttp.open("DELETE", "http://localhost:8080/bookmark/" + searchId, true);
+            xhttp.open("DELETE", "/bookmark/" + searchId, true);
         } else {
-            xhttp.open("POST", "http://localhost:8080/bookmark/" + searchId, true);
+            xhttp.open("POST", "/bookmark/" + searchId, true);
         }
         xhttp.send();
         xhttp.onreadystatechange = function() {
